@@ -11,9 +11,30 @@ class Time extends React.Component {
       time: ''
     }
   }
-
-
   
+  componentDidMount(props){
+    const url = 'http://api.timezonedb.com/v2.1/get-time-zone'
+    const params = {
+      key: `1WS9AV4WHCI4`,
+      format: 'json',
+      by:'position',
+      lat: this.state.lat,
+      lng: this.state.lon
+    }
+
+    axios.get(url, {params})
+    .then(res => {
+      console.log(res)
+      this.setState({
+        time: res.data.formatted
+      })
+    }).catch(function(err){
+      console.log(err)
+    })
+
+
+  }
+
   componentWillReceiveProps (nextProps) {
 
     console.log(nextProps.lat)
@@ -49,7 +70,7 @@ class Time extends React.Component {
   render(){
     return (
       <section>
-        <h1>{this.state.time}</h1>
+        <h1>current time: {this.state.time.slice(10,16)}</h1>
       </section> 
     )  
   }
